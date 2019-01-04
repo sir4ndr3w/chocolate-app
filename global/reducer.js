@@ -1,9 +1,18 @@
 import { initialState } from './state';
+import * as types from './types';
 
 export const reducer = (state = initialState, action) => {
+    const property = action.meta.type;
+
     switch(action.type){
-        case FETCH_USER:
-            
+        case types.firebase.FIREBASE_UPDATE_REQUESTED:
+            return {...state, [property]: { inProgress: true, error: '' }};
+        case types.firebase.FIREBASE_UPDATE_REJECTED:
+            return {...state, [property]: { inProgress: false, error: action.payload.error}};
+        case types.firebase.FIREBASE_UPDATE_FULFILLED:
+            return {...state, [property]: { inProgress: false, error: ''}};
+        default:
+            return state;
+
     }
-    return state;
 };

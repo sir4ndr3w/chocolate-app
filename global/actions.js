@@ -1,25 +1,32 @@
-import { profileRef } from "../config/firebase";
-import * as firebase from 'firebase';
+import * as types from './types';
 
-export const setFavoriteAnimal = (favoriteAnimal) => {
+export function firebaseUpdateRequested(payload, metaType){
     return {
-        type: "setFavoriteAnimal",
-        value: favoriteAnimal,
-    };
-};
+        type: types.firebase.FIREBASE_UPDATE_REQUESTED,
+        payload,
+        meta: { type: metaType },
+    }
+}
 
-export const setPersonData = (personData) => {
+export function firebaseUpdateRejected(error, metaType){
     return {
-        type: "setPersonData",
-        value: personData
-    };
-};
+        type: types.firebase.FIREBASE_UPDATE_REJECTED,
+        payload: { error },
+        meta: { type: metaType },
+    }
+}
 
-export const fetchUser = (id) => async dispatch => {
-    todosRef.child(id).on("value", snapshot => {
-        dispatch({
-            type: FETCH_TODOS,
-            payload: snapshot.val()
-        });
-    });
-};
+export function firebaseUpdateFulfilled(metaType){
+    return {
+        type: types.firebase.FIREBASE_UPDATE_FULFILLED,
+        payload: {},
+        meta: { type: metaType },
+    }
+}
+
+export function updateUserContactsRequested(uid, name, phone){
+    return firebaseUpdateRequested({uid, name, phone}, types.metaTypes.userContacts)
+}
+
+
+
